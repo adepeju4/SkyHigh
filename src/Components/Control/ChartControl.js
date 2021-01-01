@@ -8,6 +8,7 @@ import Piechart from "../PieChart/Piechart";
 import ComponentBarChart from "../ComponentBarChat.js/ComponentBarChart";
 import TimeSeries from "../Time Series/TimeSeries";
 import Table from "../Table/Table";
+import { filter } from "dom-helpers";
 
 function ChartControl() {
   const { insight, error, isPending } = useContext(InsightContext);
@@ -58,15 +59,15 @@ function ChartControl() {
         outputData["Profit"] = sumProfit;
         outputData["Sales"] = sumSales;
         result.push(outputData);
-        result.sort((a, b) => {
-          const c = new Date(a[filterBy]);
-          const d = new Date(b[filterBy]);
-          return c - d;
-        });
+       
       }
+      result.sort((a, b) => {
+        const c = new Date(a[filterBy]);
+        const d = new Date(b[filterBy]);
+        return c - d;
+      });
     }
     else if (filterBy === "Year") {
-      console.log(grouped)
       let getYears;
       const output = [];
       for (const [key, value] of Object.entries(grouped)) {
@@ -117,7 +118,7 @@ function ChartControl() {
       }
     } else if (filterBy === 'Month') {
       let getMonths;
-        const output = [];
+      const output = [];
       for (const [key, value] of Object.entries(grouped)) {
         let sumProfit = 0;
         let sumSales = 0;
@@ -146,46 +147,46 @@ function ChartControl() {
 
         getMonths = groupToMonths(output, filterBy);
       }
-       for (const [key, value] of Object.entries(getMonths)) {
-         let sumProfit = 0;
-         let sumSales = 0;
-         value.forEach((val) => {
-           sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
-           sumSales = parseInt(sumSales) + parseInt(val.Sales);
-         });
-         const outputData = {};
-         outputData[filterBy] = key;
-         outputData["Profit"] = sumProfit;
-         outputData["Sales"] = sumSales;
-         result.push(outputData);
-       }
-        result.sort((a, b) => {
-          const c = new Date(a[filterBy]);
-          const d = new Date(b[filterBy]);
-          return c - d;
+      for (const [key, value] of Object.entries(getMonths)) {
+        let sumProfit = 0;
+        let sumSales = 0;
+        value.forEach((val) => {
+          sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
+          sumSales = parseInt(sumSales) + parseInt(val.Sales);
         });
+        const outputData = {};
+        outputData[filterBy] = key;
+        outputData["Profit"] = sumProfit;
+        outputData["Sales"] = sumSales;
+        result.push(outputData);
+      }
+      result.sort((a, b) => {
+        const c = new Date(a[filterBy]);
+        const d = new Date(b[filterBy]);
+        return c - d;
+      });
       
-    }else{
-       for (const [key, value] of Object.entries(grouped)) {
-         let sumProfit = 0;
-         let sumSales = 0;
-         value.forEach((val) => {
-           sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
-           sumSales = parseInt(sumSales) + parseInt(val.Sales);
-         });
-         const outputData = {};
-         outputData[filterBy] = key;
-         outputData["Profit"] = sumProfit;
-         outputData["Sales"] = sumSales;
-         result.push(outputData);
-         result.sort((a, b) => {
-           const c = a[filterBy].toLowerCase();
-           const d = b[filterBy].toLowerCase();
-           return c - d;
-         });
-       }
-     }
-
+    } else {
+      for (const [key, value] of Object.entries(grouped)) {
+        let sumProfit = 0;
+        let sumSales = 0;
+        value.forEach((val) => {
+          sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
+          sumSales = parseInt(sumSales) + parseInt(val.Sales);
+        });
+        const outputData = {};
+        outputData[filterBy] = key;
+        outputData["Profit"] = sumProfit;
+        outputData["Sales"] = sumSales;
+        result.push(outputData);
+     
+      }
+     result = result.sort((a, b) => {
+        const c = a[filterBy].toLowerCase().trim();
+        const d = b[filterBy].toLowerCase().trim();
+        return c - d
+      })
+    }
  
 
     if (range && limit && range > 0) {
