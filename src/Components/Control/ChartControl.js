@@ -20,6 +20,8 @@ function ChartControl() {
   let data;
   let grouped
 
+  console.log(insight, error, isPending, 'please')
+
   if (insight && filterBy) {
     let result = [];
     const groupBy = (data, property) => {
@@ -233,7 +235,21 @@ function ChartControl() {
 
   return (
     <div>
-      {error && { error }}
+      {error && (
+        <div
+          style={{
+            background: "#000",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "#fff",
+            height: "100vh",
+            width: "100%",
+          }}
+        >
+          <h2>{error}</h2>
+        </div>
+      )}
       {isPending && <Load />}
       {insight && (
         <div>
@@ -243,15 +259,17 @@ function ChartControl() {
             <p>
               Due to large amount of data and for easy visualisation, we are
               returning the data with the limit of 10. Click the next or
-              previous buttons (at the bottom right of your screen) to load the next ten or the previous.
+              previous buttons (at the bottom right of your screen) to load the
+              next ten or the previous.
             </p>
             <p>
               You can also filter by categories on the right bottom of your
               screen
             </p>
             <p>
-              Note that below the bar charts and inbetween the time series charts, there are brushes available to zoom in on chart data
-</p>
+              Note that below the bar charts and inbetween the time series
+              charts, there are brushes available to zoom in on chart data
+            </p>
           </div>
 
           <Barchart
