@@ -1,0 +1,33 @@
+.labels{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profit{
+    margin-left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sales{
+    margin-left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profitColor{
+    background: #000;
+    width: 13px;
+    height: 10px;
+   margin-right: 3px;
+}
+
+.salesColor{
+     background: #A9A9A9;
+    width: 13px;
+    height: 10px;
+   margin-right: 3px;
+}

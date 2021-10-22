@@ -1,0 +1,39 @@
+.load__buttons{
+    padding: 10px;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    right: 30px;
+
+}
+
+.prev, .next{
+    padding: 5px 15px;
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+.stop{
+      padding: 5px 15px;
+    background: transparent;
+    border: 1px solid black;
+    color: #e5e5e5;
+    cursor: not-allowed;
+}
+
+.counter{
+    margin:0 5px;
+}
+
+.prev:hover, .next:hover{
+    background: #fff;
+    color: #000;
+    border: 1px solid #fff;
+    transition: all 0.3s ease-in-out;
+}
+
