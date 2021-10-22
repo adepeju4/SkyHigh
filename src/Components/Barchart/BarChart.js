@@ -14,7 +14,8 @@ import {
 
 
 
-function Barchart({data, filterBy, min, max, id}) {
+function Barchart({ data, filterBy,  min, max, id }) {
+
     return (
       <div className={chartContainer} id = {id}>
         <h3>BAR CHART</h3>

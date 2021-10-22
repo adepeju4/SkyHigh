@@ -9,10 +9,12 @@ import ComponentBarChart from "../ComponentBarChat.js/ComponentBarChart";
 import TimeSeries from "../Time Series/TimeSeries";
 import Table from "../Table/Table";
 
+
 function ChartControl() {
   const { insight, error, isPending } = useContext(InsightContext);
   const [range, setrange] = useState(1);
-  const [filterBy, setFilterBy] = useState("Product Name");
+  const [filterBy, setFilterBy] = useState("Order Date");
+
   const limit = 50;
   let min;
   let max;
@@ -32,6 +34,7 @@ function ChartControl() {
     };
 
     const grouped = groupBy(insight, filterBy);
+    
 
     for (const [key, value] of Object.entries(grouped)) {
       let sumProfit = 0;
@@ -40,11 +43,32 @@ function ChartControl() {
         sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
         sumSales = parseInt(sumSales) + parseInt(val.Sales);
       });
-      const outputData = {};
+      if (filterBy === 'Order Date') {
+        const setDateStr = new Date(key).toDateString().split(" ");
+        const dateStr = `${setDateStr[2]} ${setDateStr[1]} ${setDateStr[3]}`;
+        const outputData = {};
+        outputData[filterBy] = dateStr;
+        outputData["Profit"] = sumProfit;
+        outputData["Sales"] = sumSales;
+        result.push(outputData);
+        result.sort((a, b) => {
+          const c = new Date(a[filterBy]);
+          const d = new Date(b[filterBy]);
+          return c-d
+        })
+      } else {
+          const outputData = {};
       outputData[filterBy] = key;
       outputData["Profit"] = sumProfit;
       outputData["Sales"] = sumSales;
-      result.push(outputData);
+        result.push(outputData);
+          result.sort((a, b) => {
+            const c = a[filterBy].toLowerCase();
+            const d = b[filterBy].toLowerCase();
+            return c - d;
+          });
+      }
+    
     }
 
     if (range && limit && range > 0) {
@@ -52,7 +76,7 @@ function ChartControl() {
       const perPage = limit * 1 || 200;
       const start = (newPage - 1) * perPage;
       const end = newPage * perPage;
-
+      result.sort((a,b)=>a-b)
       data = result.slice(start, end);
       const getProfit = data.map((el) => Number(el.Profit));
       const getSale = data.map((el) => Number(el.Sales));
@@ -60,14 +84,13 @@ function ChartControl() {
       const minSale = Math.min(...getSale);
       const minProfit = Math.min(...getProfit);
       const maxProfit = Math.max(...getProfit);
-      console.log(maxSale, maxProfit, "max sale");
       if (minSale < minProfit) {
         min = minSale;
       } else {
         min = minProfit;
       }
       if (maxSale > maxProfit) {
-        console.log(maxSale > maxProfit);
+        
         max = maxSale;
       } else {
         max = maxProfit;
@@ -88,7 +111,7 @@ function ChartControl() {
   const handlePrev = (e) => {
     e.preventDefault();
     const reduce = range - 1;
-    console.log(range, data, data.length, reduce, "does it change");
+ 
     if (reduce > 0) {
       setrange(reduce);
     }
