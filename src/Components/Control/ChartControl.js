@@ -9,7 +9,6 @@ import ComponentBarChart from "../ComponentBarChat.js/ComponentBarChart";
 import TimeSeries from "../Time Series/TimeSeries";
 import Table from "../Table/Table";
 
-
 function ChartControl() {
   const { insight, error, isPending } = useContext(InsightContext);
   const [range, setrange] = useState(1);
@@ -34,7 +33,6 @@ function ChartControl() {
     };
 
     const grouped = groupBy(insight, filterBy);
-    
 
     for (const [key, value] of Object.entries(grouped)) {
       let sumProfit = 0;
@@ -43,7 +41,7 @@ function ChartControl() {
         sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
         sumSales = parseInt(sumSales) + parseInt(val.Sales);
       });
-      if (filterBy === 'Order Date') {
+      if (filterBy === "Order Date") {
         const setDateStr = new Date(key).toDateString().split(" ");
         const dateStr = `${setDateStr[2]} ${setDateStr[1]} ${setDateStr[3]}`;
         const outputData = {};
@@ -54,21 +52,20 @@ function ChartControl() {
         result.sort((a, b) => {
           const c = new Date(a[filterBy]);
           const d = new Date(b[filterBy]);
-          return c-d
-        })
+          return c - d;
+        });
       } else {
-          const outputData = {};
-      outputData[filterBy] = key;
-      outputData["Profit"] = sumProfit;
-      outputData["Sales"] = sumSales;
+        const outputData = {};
+        outputData[filterBy] = key;
+        outputData["Profit"] = sumProfit;
+        outputData["Sales"] = sumSales;
         result.push(outputData);
-          result.sort((a, b) => {
-            const c = a[filterBy].toLowerCase();
-            const d = b[filterBy].toLowerCase();
-            return c - d;
-          });
+        result.sort((a, b) => {
+          const c = a[filterBy].toLowerCase();
+          const d = b[filterBy].toLowerCase();
+          return c - d;
+        });
       }
-    
     }
 
     if (range && limit && range > 0) {
@@ -76,7 +73,6 @@ function ChartControl() {
       const perPage = limit * 1 || 200;
       const start = (newPage - 1) * perPage;
       const end = newPage * perPage;
-      result.sort((a,b)=>a-b)
       data = result.slice(start, end);
       const getProfit = data.map((el) => Number(el.Profit));
       const getSale = data.map((el) => Number(el.Sales));
@@ -90,7 +86,6 @@ function ChartControl() {
         min = minProfit;
       }
       if (maxSale > maxProfit) {
-        
         max = maxSale;
       } else {
         max = maxProfit;
@@ -101,17 +96,17 @@ function ChartControl() {
   const handleNext = (e) => {
     e.preventDefault();
     const count = range + 1;
-      setrange(count);
+    setrange(count);
   };
 
   if (insight && data.length <= 0) {
-    setrange(1)
+    setrange(1);
   }
 
   const handlePrev = (e) => {
     e.preventDefault();
     const reduce = range - 1;
- 
+
     if (reduce > 0) {
       setrange(reduce);
     }
@@ -123,11 +118,18 @@ function ChartControl() {
       {isPending && <Load />}
       {insight && (
         <div>
-          <div style={{textAlign: 'center'}}>
+          <div style={{ textAlign: "center" }}>
             <h3>SkyHigh Retails</h3>
             <h4>Sales Insights and Charts</h4>
-            <p>Due to large amount of data and for easy visualisation, we are returning the data with the limit of 50. Click the next or previous buttons to load the next fifty or the previous.</p>
-            <p>You can also filter by categories on the right bottom of your screen</p>
+            <p>
+              Due to large amount of data and for easy visualisation, we are
+              returning the data with the limit of 50. Click the next or
+              previous buttons to load the next fifty or the previous.
+            </p>
+            <p>
+              You can also filter by categories on the right bottom of your
+              screen
+            </p>
           </div>
 
           <Barchart
