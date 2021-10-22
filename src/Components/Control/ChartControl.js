@@ -103,6 +103,8 @@ function ChartControl() {
           <div style={{textAlign: 'center'}}>
             <h3>SkyHigh Retails</h3>
             <h4>Sales Insights and Charts</h4>
+            <p>Due to large amount of data and for easy visualisation, we are returning the data with the limit of 50. Click the next or previous buttons to load the next fifty or the previous.</p>
+            <p>You can also filter by categories on the right bottom of your screen</p>
           </div>
 
           <Barchart
