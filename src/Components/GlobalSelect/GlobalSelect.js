@@ -14,13 +14,13 @@ function GlobalSelect({ filter, setFilter }) {
         id="filter"
         onChange={handleFilterChange}
       >
-        <option value="Order Date">Filter By Day</option>
         <option value="Year">Filter By Year</option>
-        {/* <option value = "Month"> Month </option> */}
-        <option value="Product Name">Product Name</option>
-        <option value="City">City</option>
-        <option value="Category">Category</option>
-        <option value="Country">Country</option>
+        <option value = "Month"> Filter by Month </option>
+        <option value="Order Date">Filter By Day</option>
+        <option value="Product Name">Filter by Product Name</option>
+        <option value="City">Filter by City</option>
+        <option value="Category">Filter by Category</option>
+        <option value="Country"> Filter by Country</option>
       </select>
     </div>
   );

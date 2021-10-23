@@ -12,7 +12,7 @@ import Table from "../Table/Table";
 function ChartControl() {
   const { insight, error, isPending } = useContext(InsightContext);
   const [range, setrange] = useState(1);
-  const [filterBy, setFilterBy] = useState("Order Date");
+  const [filterBy, setFilterBy] = useState("Year");
 
   const limit = 50;
   let min;
@@ -64,45 +64,93 @@ function ChartControl() {
           return c - d;
         });
       }
-
     }
-     else if (filterBy === "Year") {
-       let getYears;
-       const output = [];
-       for (const [key, value] of Object.entries(grouped)) {
-         let sumProfit = 0;
-         let sumSales = 0;
-         value.forEach((val) => {
-           sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
-           sumSales = parseInt(sumSales) + parseInt(val.Sales);
-         });
+    else if (filterBy === "Year") {
+      console.log(grouped)
+      let getYears;
+      const output = [];
+      for (const [key, value] of Object.entries(grouped)) {
+        let sumProfit = 0;
+        let sumSales = 0;
+        value.forEach((val) => {
+          sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
+          sumSales = parseInt(sumSales) + parseInt(val.Sales);
+        });
 
-         const setDateStr = new Date(key).toDateString().split(" ");
-         const dateStr = setDateStr[3];
-         const outputData = {};
-         outputData[filterBy] = dateStr;
-         outputData["Profit"] = sumProfit;
-         outputData["Sales"] = sumSales;
-         output.push(outputData);
-         output.sort((a, b) => {
-           const c = new Date(a[filterBy]);
-           const d = new Date(b[filterBy]);
-           return c - d;
-         });
+        const setDateStr = new Date(key).toDateString().split(" ");
+        const dateStr = setDateStr[3];
+        const outputData = {};
+        outputData[filterBy] = dateStr;
+        outputData["Profit"] = sumProfit;
+        outputData["Sales"] = sumSales;
+        output.push(outputData);
+        output.sort((a, b) => {
+          const c = new Date(a[filterBy]);
+          const d = new Date(b[filterBy]);
+          return c - d;
+        });
 
-         const groupToYear = (data, property) => {
-           return data.reduce((acc, obj) => {
-             const key = obj[property];
-             if (!acc[key]) {
-               acc[key] = [];
-             }
-             acc[key].push(obj);
-             return acc;
-           }, {});
-         };
-         getYears = groupToYear(output, filterBy);
-       }
-       for (const [key, value] of Object.entries(getYears)) {
+        const groupToYear = (data, property) => {
+          return data.reduce((acc, obj) => {
+            const key = obj[property];
+            if (!acc[key]) {
+              acc[key] = [];
+            }
+            acc[key].push(obj);
+            return acc;
+          }, {});
+        };
+        getYears = groupToYear(output, filterBy);
+      }
+      for (const [key, value] of Object.entries(getYears)) {
+        let sumProfit = 0;
+        let sumSales = 0;
+        value.forEach((val) => {
+          sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
+          sumSales = parseInt(sumSales) + parseInt(val.Sales);
+        });
+        const outputData = {};
+        outputData[filterBy] = key;
+        outputData["Profit"] = sumProfit;
+        outputData["Sales"] = sumSales;
+        result.push(outputData);
+      }
+    } else if (filterBy === 'Month') {
+      let getMonths;
+        const output = [];
+      for (const [key, value] of Object.entries(grouped)) {
+        let sumProfit = 0;
+        let sumSales = 0;
+        value.forEach((val) => {
+          sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
+          sumSales = parseInt(sumSales) + parseInt(val.Sales);
+        });
+        const setMonthStr = new Date(key).toDateString().split(" ");
+        const monthStr = `${setMonthStr[1]} ${setMonthStr[3]}`;
+        const outputData = {};
+        outputData[filterBy] = monthStr;
+        outputData["Profit"] = sumProfit;
+        outputData["Sales"] = sumSales;
+        output.push(outputData);
+        output.sort((a, b) => {
+          const c = new Date(a[filterBy]);
+          const d = new Date(b[filterBy]);
+          return c - d;
+        });
+        const groupToMonths = (data, property) => {
+          return data.reduce((acc, obj) => {
+            const key = obj[property];
+            if (!acc[key]) {
+              acc[key] = [];
+            }
+            acc[key].push(obj);
+            return acc;
+          }, {});
+        };
+
+        getMonths = groupToMonths(output, filterBy);
+      }
+       for (const [key, value] of Object.entries(getMonths)) {
          let sumProfit = 0;
          let sumSales = 0;
          value.forEach((val) => {
@@ -115,7 +163,8 @@ function ChartControl() {
          outputData["Sales"] = sumSales;
          result.push(outputData);
        }
-     } else {
+      
+    }else{
        for (const [key, value] of Object.entries(grouped)) {
          let sumProfit = 0;
          let sumSales = 0;
