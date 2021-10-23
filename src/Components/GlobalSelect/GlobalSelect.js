@@ -14,7 +14,9 @@ function GlobalSelect({ filter, setFilter }) {
         id="filter"
         onChange={handleFilterChange}
       >
-        <option value="Order Date">Filter By Date</option>
+        <option value="Order Date">Filter By Day</option>
+        <option value="Year">Filter By Year</option>
+        {/* <option value = "Month"> Month </option> */}
         <option value="Product Name">Product Name</option>
         <option value="City">City</option>
         <option value="Category">Category</option>

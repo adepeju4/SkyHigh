@@ -18,6 +18,7 @@ function ChartControl() {
   let min;
   let max;
   let data;
+  let grouped
 
   if (insight && filterBy) {
     let result = [];
@@ -32,16 +33,24 @@ function ChartControl() {
       }, {});
     };
 
-    const grouped = groupBy(insight, filterBy);
+    if (filterBy === 'Month' || filterBy === 'Year') {
+      
+     grouped = groupBy(insight, 'Order Date');
+    } else {
+          grouped = groupBy(insight, filterBy);
+    }
 
-    for (const [key, value] of Object.entries(grouped)) {
-      let sumProfit = 0;
-      let sumSales = 0;
-      value.forEach((val) => {
-        sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
-        sumSales = parseInt(sumSales) + parseInt(val.Sales);
-      });
-      if (filterBy === "Order Date") {
+
+
+
+    if (filterBy === "Order Date") {
+      for (const [key, value] of Object.entries(grouped)) {
+        let sumProfit = 0;
+        let sumSales = 0;
+        value.forEach((val) => {
+          sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
+          sumSales = parseInt(sumSales) + parseInt(val.Sales);
+        });
         const setDateStr = new Date(key).toDateString().split(" ");
         const dateStr = `${setDateStr[2]} ${setDateStr[1]} ${setDateStr[3]}`;
         const outputData = {};
@@ -54,19 +63,80 @@ function ChartControl() {
           const d = new Date(b[filterBy]);
           return c - d;
         });
-      } else {
-        const outputData = {};
-        outputData[filterBy] = key;
-        outputData["Profit"] = sumProfit;
-        outputData["Sales"] = sumSales;
-        result.push(outputData);
-        result.sort((a, b) => {
-          const c = a[filterBy].toLowerCase();
-          const d = b[filterBy].toLowerCase();
-          return c - d;
-        });
       }
+
     }
+     else if (filterBy === "Year") {
+       let getYears;
+       const output = [];
+       for (const [key, value] of Object.entries(grouped)) {
+         let sumProfit = 0;
+         let sumSales = 0;
+         value.forEach((val) => {
+           sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
+           sumSales = parseInt(sumSales) + parseInt(val.Sales);
+         });
+
+         const setDateStr = new Date(key).toDateString().split(" ");
+         const dateStr = setDateStr[3];
+         const outputData = {};
+         outputData[filterBy] = dateStr;
+         outputData["Profit"] = sumProfit;
+         outputData["Sales"] = sumSales;
+         output.push(outputData);
+         output.sort((a, b) => {
+           const c = new Date(a[filterBy]);
+           const d = new Date(b[filterBy]);
+           return c - d;
+         });
+
+         const groupToYear = (data, property) => {
+           return data.reduce((acc, obj) => {
+             const key = obj[property];
+             if (!acc[key]) {
+               acc[key] = [];
+             }
+             acc[key].push(obj);
+             return acc;
+           }, {});
+         };
+         getYears = groupToYear(output, filterBy);
+       }
+       for (const [key, value] of Object.entries(getYears)) {
+         let sumProfit = 0;
+         let sumSales = 0;
+         value.forEach((val) => {
+           sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
+           sumSales = parseInt(sumSales) + parseInt(val.Sales);
+         });
+         const outputData = {};
+         outputData[filterBy] = key;
+         outputData["Profit"] = sumProfit;
+         outputData["Sales"] = sumSales;
+         result.push(outputData);
+       }
+     } else {
+       for (const [key, value] of Object.entries(grouped)) {
+         let sumProfit = 0;
+         let sumSales = 0;
+         value.forEach((val) => {
+           sumProfit = parseInt(sumProfit) + parseInt(val.Profit);
+           sumSales = parseInt(sumSales) + parseInt(val.Sales);
+         });
+         const outputData = {};
+         outputData[filterBy] = key;
+         outputData["Profit"] = sumProfit;
+         outputData["Sales"] = sumSales;
+         result.push(outputData);
+         result.sort((a, b) => {
+           const c = a[filterBy].toLowerCase();
+           const d = b[filterBy].toLowerCase();
+           return c - d;
+         });
+       }
+     }
+
+ 
 
     if (range && limit && range > 0) {
       const newPage = range * 1 || 1;
