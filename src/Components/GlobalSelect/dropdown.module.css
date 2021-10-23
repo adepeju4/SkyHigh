@@ -27,8 +27,8 @@
   border-radius: .2rem;
   border: 1px solid #000;
    position: fixed;
-    bottom: 70px;
-    right: 30px;
+    bottom: 120px;
+    right: 60px;
 }
 .select select {
   flex: 1;
