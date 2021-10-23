@@ -14,7 +14,7 @@ function ChartControl() {
   const [range, setrange] = useState(1);
   const [filterBy, setFilterBy] = useState("Year");
 
-  const limit = 50;
+  const limit = 10;
   let min;
   let max;
   let data;
@@ -242,8 +242,8 @@ function ChartControl() {
             <h4>Sales Insights and Charts</h4>
             <p>
               Due to large amount of data and for easy visualisation, we are
-              returning the data with the limit of 50. Click the next or
-              previous buttons to load the next fifty or the previous.
+              returning the data with the limit of 10. Click the next or
+              previous buttons to load the next ten or the previous.
             </p>
             <p>
               You can also filter by categories on the right bottom of your
