@@ -20,8 +20,6 @@ function ChartControl() {
   let data;
   let grouped
 
-  console.log(insight, error, isPending, 'please')
-
   if (insight && filterBy) {
     let result = [];
     const groupBy = (data, property) => {
@@ -134,11 +132,7 @@ function ChartControl() {
         outputData["Profit"] = sumProfit;
         outputData["Sales"] = sumSales;
         output.push(outputData);
-        output.sort((a, b) => {
-          const c = new Date(a[filterBy]);
-          const d = new Date(b[filterBy]);
-          return c - d;
-        });
+       
         const groupToMonths = (data, property) => {
           return data.reduce((acc, obj) => {
             const key = obj[property];
@@ -165,6 +159,11 @@ function ChartControl() {
          outputData["Sales"] = sumSales;
          result.push(outputData);
        }
+        result.sort((a, b) => {
+          const c = new Date(a[filterBy]);
+          const d = new Date(b[filterBy]);
+          return c - d;
+        });
       
     }else{
        for (const [key, value] of Object.entries(grouped)) {
